@@ -1,0 +1,33 @@
+FILE SYSTEM AND LINK ANALYSIS REPORT
+
+1. Inode Numbers of All Files
+original.txt: inode 230283
+hardlink.txt: inode 230283 (same as original)
+symlink.txt: inode 232832 (different from original)
+
+2. Comparison Between Hard Link and Symbolic Link
+Hard link (hardlink.txt) shares the exact same inode number as original.txt. It is essentially another name pointing to the same data on disk.
+Symbolic link (symlink.txt) has its own separate inode number. It does not store the file's data directly; instead it stores a path pointing to original.txt.
+
+3. Effect of Deleting the Original File
+After running "rm original.txt":
+- hardlink.txt still worked perfectly (cat hardlink.txt showed "this is the original file"). This is because the hard link points directly to the same data on disk, and the data isn't removed until all hard links to it are deleted.
+- symlink.txt broke, showing "cat: symlink.txt: No such file or directory". This is because the symlink only stores a path to original.txt, and once that path no longer exists, the symlink has nothing to point to.
+
+4. Metadata Collected Using Linux Utilities
+stat hardlink.txt:
+- Inode: 230283
+- Size: 26 bytes
+- Permissions: 0644 (-rw-r--r--)
+- Links: 1
+
+stat symlink.txt:
+- Inode: 232832
+- Size: 12 bytes
+- Permissions: 0777 (lrwxrwxrwx)
+- Links: 1
+
+5. Conclusions Drawn From the Experiment
+A hard link and its original file are indistinguishable at the filesystem level - they share the same inode and the same underlying data, so deleting one still leaves the data accessible through the other. A symbolic link is a separate, lightweight file that only stores a reference (path) to the target file; if the target is deleted or moved, the symlink becomes broken. This makes hard links more resilient for preserving access to file data, while symlinks are more flexible (can point across filesystems/directories) but are dependent on the original file's continued existence.
+
+END OF REPORT
