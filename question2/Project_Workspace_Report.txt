@@ -1,0 +1,40 @@
+SECURE PROJECT WORKSPACE SETUP REPORT
+
+1. Directory Structure Created
+Commands:
+mkdir -p project_workspace/docs
+mkdir -p project_workspace/data
+ls -l project_workspace/
+
+Output:
+drwxr-xr-x  data
+drwxr-xr-x  docs
+
+Observation: Created a project_workspace folder containing two subfolders, "docs" and "data," to organize documentation and project data separately.
+
+2. File Permissions Before and After Modification
+Command (before): ls -ld project_workspace
+Output (before): drwxr-xr-x (owner: read/write/execute, group: read/execute, others: read/execute)
+
+Command (change): chmod 750 project_workspace
+Command (after): ls -ld project_workspace
+Output (after): drwxr-x--- (owner: read/write/execute, group: read/execute, others: no access)
+
+Observation: Before the change, anyone on the system could view the folder's contents. After running chmod 750, only the owner has full access, the group can read/execute, and all other users are blocked entirely.
+
+3. Ownership Details
+Command: ls -l project_workspace
+Output: Both "data" and "docs" are owned by user "coder" and group "coder."
+
+Observation: The owner and group are both "coder," meaning only this user account (and members of the coder group) have any elevated access to these folders.
+
+4. Umask Value Used
+Command: umask
+Output: 0022
+
+Observation: A umask of 0022 means new files are created by default with permissions 644 (rw-r--r--) and new directories with 755 (rwxr-xr-x), removing write access for group and others automatically.
+
+5. Explanation of How Permissions Protect Project Data
+Restricting permissions with chmod 750 ensures that only the file owner and authorized group members can access the project workspace, while all other users on the system are denied access entirely. This prevents unauthorized users from viewing, modifying, or deleting sensitive project files and documentation, which is especially important in a shared or multi-user Linux environment.
+
+END OF REPORT
